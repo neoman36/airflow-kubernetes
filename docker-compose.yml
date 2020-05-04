@@ -1,0 +1,26 @@
+version: '3'
+services:
+  scheduler:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    network_mode: 'host'
+    volumes:
+      - ./airflow-data:/root/airflow
+    env_file:
+      - .env
+    command: ['airflow', 'scheduler']
+
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    network_mode: 'host'
+    volumes:
+      - ./airflow-data:/root/airflow
+    ports:
+      - '8080:8080'
+    env_file:
+      - .env
+    command: ['airflow', 'webserver', '-p', '8080']
+

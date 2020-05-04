@@ -1,0 +1,29 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: airflow-webserver-pod
+  labels:
+    app: airflow-webserver
+spec:
+  containers:
+    - name: airflow-webserver
+      image: neoman36/myairflow:latest
+      ports:
+        - containerPort: 80
+      command: ['airflow', 'webserver', '-p', '80']
+      env:
+        - name: AIRFLOW_HOME
+          value: '/root/airflow'
+        - name: KUBERNETES_SERVICE_HOST
+          value: '192.168.99.113'
+        - name: KUBERNETES_SERVICE_PORT
+          value: '8443'
+        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+          value: 'postgresql+psycopg2://airflow:airflow@10.0.2.2/airflow_kube_metadata'
+        - name: AIRFLOW__CORE__DAGS_FOLDER
+          value: '/root/airflow/dags'
+        - name: AIRFLOW__CORE__BASE_LOGS_FOLDER
+          value: '/root/airflow/logs'
+        - name: AIRFLOW__CORE__EXECUTOR
+          value: 'KubernetesExecutor'
+
