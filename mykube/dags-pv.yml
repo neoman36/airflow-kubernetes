@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: airflow-dags
+  labels:
+    files: dags
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: slow
+  nfs:
+    server: 10.0.2.2
+    path: /home/vpetrov/h/airflow/airflow-data/dags

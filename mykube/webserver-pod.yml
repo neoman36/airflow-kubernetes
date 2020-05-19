@@ -20,4 +20,23 @@ spec:
           value: '/root/airflow/dags'
         - name: AIRFLOW__CORE__BASE_LOGS_FOLDER
           value: '/root/airflow/logs'
-
+      volumeMounts:
+        - mountPath: /root/airflow/dags
+          name: airflow-dags
+        - mountPath: /root/airflow/logs
+          name: airflow-logs
+        - name: airflow-config
+          readOnly: true
+          mountPath: /root/airflow/airflow.cfg
+          subPath: airflow.cfg
+  volumes:
+    - name: airflow-dags
+      persistentVolumeClaim:
+        claimName: airflow-dags-pvc
+    - name: airflow-logs
+      persistentVolumeClaim:
+        claimName: airflow-logs-pvc
+    - name: airflow-config
+      configMap:
+        name: airflow-configmap
+        defaultMode: 420

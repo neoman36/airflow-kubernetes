@@ -1,11 +1,14 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: dags-pvc
+  name: airflow-dags-pvc
 spec:
   accessModes:
     - ReadWriteMany
   storageClassName: slow
   resources:
     requests:
-      storage: 1Gi
+      storage: 100Mi
+  selector:
+    matchLabels:
+      files: dags
