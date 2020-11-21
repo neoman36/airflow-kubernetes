@@ -11,6 +11,14 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: slow
-  nfs:
-    server: 10.0.2.2
-    path: /home/vpetrov/h/airflow/airflow-data/logs
+  volumeMode: Filesystem
+  local:
+    path: /host/logs
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - minikube
