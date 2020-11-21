@@ -1,6 +1,6 @@
 version: '3'
 services:
-  scheduler:
+  scheduler: &ariflow
     build:
       dockerfile: Dockerfile
       context: .
@@ -11,16 +11,8 @@ services:
       - .env
     command: ['airflow', 'scheduler']
 
-  web:
-    build:
-      dockerfile: Dockerfile
-      context: .
-    network_mode: 'host'
-    volumes:
-      - ./airflow-data:/root/airflow
+  web: *ariflow
     ports:
       - '8080:8080'
-    env_file:
-      - .env
     command: ['airflow', 'webserver', '-p', '8080']
 
