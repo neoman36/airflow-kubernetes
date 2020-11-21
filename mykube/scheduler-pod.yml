@@ -38,3 +38,5 @@ spec:
       configMap:
         name: airflow-configmap
         defaultMode: 420
+  nodeSelector:
+    "kubernetes.io/hostname": minikube
