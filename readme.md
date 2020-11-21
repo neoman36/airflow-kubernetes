@@ -1,0 +1,4 @@
+#Deploy  
+```bash
+./up.sh
+```
