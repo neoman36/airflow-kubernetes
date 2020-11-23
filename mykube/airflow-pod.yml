@@ -14,7 +14,7 @@ spec:
         - name: AIRFLOW_HOME
           value: '/root/airflow'
         - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
-          value: 'postgresql+psycopg2://airflow:airflow@10.0.2.2/airflow_kube_metadata'
+          value: 'postgresql+psycopg2://airflow:airflow@postgres-service:5432/airflow'
         - name: AIRFLOW__CORE__DAGS_FOLDER
           value: '/root/airflow/dags'
         - name: AIRFLOW__CORE__BASE_LOGS_FOLDER
