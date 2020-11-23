@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-configmap
+data:
+  pg_init.sh: |
+    #!/bin/bash
+    set -e
+
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+    CREATE USER airflow PASSWORD 'airflow';
+    CREATE DATABASE airflow;
+    GRANT ALL PRIVILEGES ON DATABASE airflow TO airflow;
+    EOSQL

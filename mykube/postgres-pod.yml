@@ -1,0 +1,32 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: postgres-pod
+  labels:
+    app: postgres
+spec:
+  containers:
+    - name: postgres
+      image: postgres:13.1
+      ports:
+        - containerPort: 5432
+      env:
+        - name: POSTGRES_PASSWORD
+          value: 'root'
+      volumeMounts:
+        - name: pg-data
+          mountPath: /var/lib/postgresql
+        - name: init
+          readOnly: true
+          mountPath: /docker-entrypoint-initdb.d/init-user-db.sh
+          subPath: pg_init.sh
+  volumes:
+    - name: pg-data
+      persistentVolumeClaim:
+        claimName: postgres-data-pvc
+    - name: init
+      configMap:
+        name: postgres-configmap
+        defaultMode: 420
+  nodeSelector:
+    "kubernetes.io/hostname": minikube
