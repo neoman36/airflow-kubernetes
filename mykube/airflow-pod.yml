@@ -1,16 +1,15 @@
 kind: Pod
 apiVersion: v1
 metadata:
-  name: airflow-webserver-pod
+  name: airflow-pod
   labels:
-    app: airflow-webserver
+    app: airflow
 spec:
   containers:
-    - name: airflow-webserver
+    - &airflow
+      name: airflow-scheduler
+      command: [ 'airflow', 'scheduler' ]
       image: neoman36/myairflow:latest
-      ports:
-        - containerPort: 80
-      command: ['airflow', 'webserver', '-p', '80']
       env:
         - name: AIRFLOW_HOME
           value: '/root/airflow'
@@ -29,6 +28,14 @@ spec:
           readOnly: true
           mountPath: /root/airflow/airflow.cfg
           subPath: airflow.cfg
+    - <<: *airflow
+      name: airflow-webserver
+      ports:
+        - containerPort: 80
+      command: [
+          'airflow', 'webserver',
+          '-p', '80',
+      ]
   volumes:
     - name: airflow-dags
       persistentVolumeClaim:
